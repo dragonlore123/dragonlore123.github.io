@@ -1,0 +1,51 @@
+@media (min-width: 768px) {
+    .mobile-only {
+      display: none !important;
+    }
+  }
+  
+  .mobile-menu {
+    background-color: #f8f9fa;
+    width: 100%;
+    padding: 1rem 0;
+    border-top: 1px solid #ddd;
+  }
+  
+  .mobile-menu .nav-link {
+    color: #333;
+    font-weight: bold;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .mobile-menu .nav-link:hover {
+    background-color: #5f95ca;
+  }
+
+
+.tall-section { 
+    background-color: gray;  
+    padding: 10px;
+    text-align: center;
+    color: #333;
+    margin: 30px;
+  }
+
+.tallSectionText {
+    color: black;
+    font-style: italic;
+}
+
+.container-fluid .row {
+    margin: 10px;
+}
+
+.backToTop {
+    color:black;
+    text-align: center;
+}
+
+.endPart {
+    color: black;
+    width: 100px;
+}
