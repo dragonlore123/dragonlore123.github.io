@@ -1,51 +1,43 @@
 @media (min-width: 768px) {
-    .mobile-only {
-      display: none !important;
-    }
+  .mobile-only {
+    display: none !important;
   }
-  
-  .mobile-menu {
-    background-color: #f8f9fa;
-    width: 100%;
-    padding: 1rem 0;
-    border-top: 1px solid #ddd;
-  }
-  
-  .mobile-menu .nav-link {
-    color: #333;
-    font-weight: bold;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .mobile-menu .nav-link:hover {
-    background-color: #5f95ca;
-  }
+}
 
 
-.tall-section { 
-    background-color: gray;  
-    padding: 10px;
-    text-align: center;
-    color: #333;
-    margin: 30px;
-  }
+
+.mobile-menu {
+  background-color: #332c2c;
+  padding: 1rem 0;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  border: 1px solid black;
+  width: 80%;
+}
+
+.mobile-menu .nav-link {
+  color: #fff;
+  font-weight: bold;
+}
+
+.mobile-menu .nav-link:hover {
+  background-color: #2a5576;
+}
+
+.tall-section {
+  background-color: gray;
+}
+
+.foodName {
+  text-align: center;
+}
 
 .tallSectionText {
-    color: black;
-    font-style: italic;
+  font-style: italic;
+  text-align: center;
 }
 
-.container-fluid .row {
-    margin: 10px;
-}
-
-.backToTop {
-    color:black;
-    text-align: center;
-}
-
-.endPart {
-    color: black;
-    width: 100px;
+.rowes {
+  margin: 10px;
 }

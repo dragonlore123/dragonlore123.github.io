@@ -4,85 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Food, LLC</title>
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
+    <nav class="navbar custom-navbar bg-secondary">
         <div class="container-fluid">
-          <!-- Brand -->
           <a class="navbar-brand" href="#">Food, LLC</a>
-    
-          <!-- Toggler button (mobile only) -->
-          <button class="navbar-toggler mobile-only d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <button class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
             <span class="navbar-toggler-icon"></span>
           </button>
-    
-          <!-- Mobile dropdown menu (this will collapse on medium and larger screens) -->
-          <div class="collapse navbar-collapse w-100 d-md-none" id="navbarNav">
-            <ul class="nav flex-column text-center mobile-menu">
-              <li class="nav-item">
-                <a class="nav-link" href="#chickenDesc">Chicken</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#beefDesc">Beef</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#sushiDesc">Sushi</a>
-              </li>
-            </ul>
-          </div>
-    
-          <!-- Desktop menu (hidden on mobile) -->
-          <div class="d-none d-md-block">
-            <ul class="nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#chickenDesc">Chicken</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#beefDesc">Beef</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#sushiDesc">Sushi</a>
-              </li>
-            </ul>
-          </div>
-    
         </div>
-    </nav>
-  <!-- Centered Heading -->
+    
+        <div class="collapse d-md-none" id="mobileMenu">
+          <ul class="nav flex-column text-center bg-secondary text-white w-100">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#chickenDesc">Chicken</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#beefDesc">Beef</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#sushiDesc">Sushi</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+
   <div class="container">
     <h1 class="text-center my-5">Our Menu</h1>
   </div>
 
-
-  <div>
     <div>
-      <div class="tall-section">
-        <h3>Chicken</h3>
-        <p class="tallSectionText" id="chickenDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus turpis ac elit vehicula blandit. Suspendisse ac elementum tortor, pellentesque varius felis. Pellentesque finibus a eros a tempor. Proin augue ex, dapibus eget mattis non, fermentum vitae ante. In hac habitasse platea dictumst. Phasellus sed tortor ipsum. Ut eget enim scelerisque, semper eros vel, commodo elit. Nulla ut neque et leo auctor faucibus. Pellentesque id risus sem.
-
-            Integer volutpat arcu ac commodo porttitor. Maecenas sodales nisl non justo ultrices sagittis. Phasellus gravida turpis sit amet lacus rutrum iaculis. Etiam ultricies justo felis, et ultrices orci lacinia at. Donec maximus eget mi eget consectetur. Vivamus sit amet condimentum velit. Vivamus dignissim orci nisi, egestas blandit eros placerat et. In vel blandit elit.</p>
-      </div>
-      <div class="tall-section">
-        <h3>Beef</h3>
-        <p class="tallSectionText" id="beefDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus turpis ac elit vehicula blandit. Suspendisse ac elementum tortor, pellentesque varius felis. Pellentesque finibus a eros a tempor. Proin augue ex, dapibus eget mattis non, fermentum vitae ante. In hac habitasse platea dictumst. Phasellus sed tortor ipsum. Ut eget enim scelerisque, semper eros vel, commodo elit. Nulla ut neque et leo auctor faucibus. Pellentesque id risus sem.
-
-            Integer volutpat arcu ac commodo porttitor. Maecenas sodales nisl non justo ultrices sagittis. Phasellus gravida turpis sit amet lacus rutrum iaculis. Etiam ultricies justo felis, et ultrices orci lacinia at. Donec maximus eget mi eget consectetur. Vivamus sit amet condimentum velit. Vivamus dignissim orci nisi, egestas blandit eros placerat et. In vel blandit elit.</p>
-      </div>
-      <div class="tall-section">
-        <h3>Sushi</h3>
-        <p id="sushiDesc" class="tallSectionText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus turpis ac elit vehicula blandit. Suspendisse ac elementum tortor, pellentesque varius felis. Pellentesque finibus a eros a tempor. Proin augue ex, dapibus eget mattis non, fermentum vitae ante. In hac habitasse platea dictumst. Phasellus sed tortor ipsum. Ut eget enim scelerisque, semper eros vel, commodo elit. Nulla ut neque et leo auctor faucibus. Pellentesque id risus sem.
-
-            Integer volutpat arcu ac commodo porttitor. Maecenas sodales nisl non justo ultrices sagittis. Phasellus gravida turpis sit amet lacus rutrum iaculis. Etiam ultricies justo felis, et ultrices orci lacinia at. Donec maximus eget mi eget consectetur. Vivamus sit amet condimentum velit. Vivamus dignissim orci nisi, egestas blandit eros placerat et. In vel blandit elit.</p>
-      </div>
+        <div class="rowes">
+            <div class="tall-section">
+                <h3 class="foodName">Chicken</h3>
+                <p class="tallSectionText" id="chickenDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus turpis ac elit vehicula blandit. Suspendisse ac elementum tortor, pellentesque varius felis. Pellentesque finibus a eros a tempor. Proin augue ex, dapibus eget mattis non, fermentum vitae ante. In hac habitasse platea dictumst. Phasellus sed tortor ipsum. Ut eget enim scelerisque, semper eros vel, commodo elit. Nulla ut neque et leo auctor faucibus. Pellentesque id risus sem.
+        
+                    Integer volutpat arcu ac commodo porttitor. Maecenas sodales nisl non justo ultrices sagittis. Phasellus gravida turpis sit amet lacus rutrum iaculis. Etiam ultricies justo felis, et ultrices orci lacinia at. Donec maximus eget mi eget consectetur. Vivamus sit amet condimentum velit. Vivamus dignissim orci nisi, egestas blandit eros placerat et. In vel blandit elit.</p>
+            </div>
+            <div class="tall-section">
+                <h3 class="foodName">Beef</h3>
+                <p class="tallSectionText" id="beefDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus turpis ac elit vehicula blandit. Suspendisse ac elementum tortor, pellentesque varius felis. Pellentesque finibus a eros a tempor. Proin augue ex, dapibus eget mattis non, fermentum vitae ante. In hac habitasse platea dictumst. Phasellus sed tortor ipsum. Ut eget enim scelerisque, semper eros vel, commodo elit. Nulla ut neque et leo auctor faucibus. Pellentesque id risus sem.
+        
+                    Integer volutpat arcu ac commodo porttitor. Maecenas sodales nisl non justo ultrices sagittis. Phasellus gravida turpis sit amet lacus rutrum iaculis. Etiam ultricies justo felis, et ultrices orci lacinia at. Donec maximus eget mi eget consectetur. Vivamus sit amet condimentum velit. Vivamus dignissim orci nisi, egestas blandit eros placerat et. In vel blandit elit.</p>
+            </div>
+            <div class="tall-section">
+                <h3 class="foodName">Sushi</h3>
+                <p id="sushiDesc" class="tallSectionText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus turpis ac elit vehicula blandit. Suspendisse ac elementum tortor, pellentesque varius felis. Pellentesque finibus a eros a tempor. Proin augue ex, dapibus eget mattis non, fermentum vitae ante. In hac habitasse platea dictumst. Phasellus sed tortor ipsum. Ut eget enim scelerisque, semper eros vel, commodo elit. Nulla ut neque et leo auctor faucibus. Pellentesque id risus sem.
+        
+                    Integer volutpat arcu ac commodo porttitor. Maecenas sodales nisl non justo ultrices sagittis. Phasellus gravida turpis sit amet lacus rutrum iaculis. Etiam ultricies justo felis, et ultrices orci lacinia at. Donec maximus eget mi eget consectetur. Vivamus sit amet condimentum velit. Vivamus dignissim orci nisi, egestas blandit eros placerat et. In vel blandit elit.</p>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="endPart">
-    <a href="#top" class="backToTop">Back to the top!</a>
-  </div>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
