@@ -11,10 +11,3 @@
       }
     }
 })();
-
-let i = function() {
-    let pede = "relina";
-    console.log("hello" + " " + pede);
-};
-
-i();
