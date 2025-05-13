@@ -1,0 +1,258 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Question container styling */
+#question-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#question-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Answer form styling */
+.answer-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Labels row styling */
+.labels-row {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Option container styling */
+.option-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+/* Radio button styling */
+input[type="radio"] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Next button styling */
+.nextButton {
+    background-color: #F5A623; /* Warm orange for the next button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+}
+
+.nextButton:hover {
+    background-color: #D4881C; /* Darker orange on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.nextButton:active {
+    background-color: #B37417; /* Even darker orange on click */
+    transform: scale(0.95); /* Slightly shrink on click */
+}
+
+.descriptionOfTest {
+    font-size: 1rem;
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+    max-width: 600px;
+    line-height: 1.5;
+    padding: 0 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    transition: background-color 0.3s ease;
+}
+/* main screen title styling */
+.main-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+/* main screen buttons styling */
+#mainScreenButton {
+    background-color: #007BFF; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 5px;
+}
+
+.accountCreationExplanation {
+    font-size: 1rem;
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+    max-width: 600px;
+    line-height: 1.5;
+    padding: 0 20px;
+    background-color: rgba(255, 255, 255, 0.3) ;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    transition: background-color 0.3s ease;
+    font-style: italic;
+}
+
+/* Style for the account creation screen title */
+.accountRegisterH1 {
+    left: 50%;
+    text-align: center;
+    margin-bottom: 49px;
+}
+
+/* Style for the input boxes */
+.registerInput {
+    width: 100%; /* Full width */
+    max-width: 400px; /* Limit the width */
+    padding: 10px; /* Add padding for better usability */
+    margin: 10px 0; /* Add spacing between inputs */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Increase font size for readability */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+/* Add focus effect for input boxes */
+.registerInput:focus {
+    border-color: #4A90E2; /* Blue border on focus */
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2); /* Stronger shadow on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Style for the submit button */
+#registerForm button {
+    background-color: #4A90E2; /* Primary blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for the submit button */
+#registerForm button:hover {
+    background-color: #357ABD; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Active effect for the submit button */
+#registerForm button:active {
+    background-color: #2C5A91; /* Even darker blue on click */
+    transform: scale(0.95); /* Slightly shrink on click */
+}
+
+/* Style for the user info container */
+.userInfoTitle {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.userInfoInput {
+    width: 100%; /* Full width */
+    max-width: 400px; /* Limit the width */
+    padding: 10px; /* Add padding for better usability */
+    margin: 10px 0; /* Add spacing between inputs */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Increase font size for readability */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.userInfoInput:focus {
+    border-color: #4A90E2; /* Blue border on focus */
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2); /* Stronger shadow on focus */
+    outline: none; /* Remove default outline */
+}
+
+
+/* User information form button styling */
+#userInfoForm button {
+    background-color: #4A90E2; /* Primary blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for the user information form button */
+#userInfoForm button:hover {
+    background-color: #357ABD; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.userInfoNote {
+    font-size: 1rem;
+    margin-top: 20px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+}
+
+.mainScreenButton:hover {
+    background-color: #033c7a; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+/* Active effect for the main screen button */
+.mainScreenButton:active {
+    background-color: #013066; /* Even darker blue on click */
+    transform: scale(0.95); /* Slightly shrink on click */
+}
+
+

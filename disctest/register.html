@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="accountRegisterH1">Register your account</h1>
+    <form id="registerForm" action="userinfo.html" method="GET">
+        <label for="email">Email:</label>
+        <input type="email" id="email" class="registerInput" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" class="registerInput" name="password" required><br><br>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" class="registerInput" name="confirmPassword" required><br><br>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" class="registerInput" name="firstName" required><br><br>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" class="registerInput" name="lastName" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p class="accountCreationExplanation">Creating an account helps us personalise the app for you and send the results to your mail!</p>
+
+    
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DiSC Test Results Charts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1faee;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    /* Each graph is 340px wide:
+         intensity (40px) + 4 score columns (4×60px) + segments (60px) = 340px */
+    .graph-container {
+      position: relative;
+      margin: 40px auto;
+      border: 1px solid #ccc;
+      width: 340px;
+    }
+    .graph-title {
+      text-align: center;
+      background: #e0e0e0;
+      font-weight: bold;
+      padding: 4px 0;
+    }
+    table.graph-table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      width: 100%;
+    }
+    table.graph-table td {
+      border: 1px solid #ddd;
+      text-align: center;
+      font-size: 12px;
+      padding: 0;
+      margin: 0;
+      height: 20px; /* fixed row height */
+      position: relative;
+    }
+    .intensity-cell {
+      width: 40px;
+      font-weight: bold;
+    }
+    .score-cell {
+      width: 60px;
+    }
+    .segment-cell {
+      width: 60px;
+      font-weight: bold;
+      background: #e8e8e8;
+    }
+    /* A blue dot is placed if a cell’s value equals the candidate’s score */
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: blue;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+    /* The overlay canvas is absolutely positioned and non‐interactive */
+    canvas.graph-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>DiSC Test Results Charts</h1>
+  <div id="graphArea"></div>
+
+  <script>
+    // Total rows (always 28) and row height (20px)
+    const totalRows = 28;
+    const rowHeight = 20;
+    const dimensions = ["Dominance", "Influence", "Steadiness", "Conscientiousness"];
+    
+    // Retrieve testResults from localStorage; if none, use the default object.
+    var testResults = {
+      rolliKaitumine: [
+        { Dominance: 0 },
+        { Influence: 0 },
+        { Steadiness: 0 },
+        { Conscientiousness: 0 },
+      ],
+      isiklikStiil: [
+        { Dominance: 0 },
+        { Influence: 0 },
+        { Steadiness: 0 },
+        { Conscientiousness: 0 },
+      ],
+      kaitumisStiil: [
+        { Dominance: 0 },
+        { Influence: 0 },
+        { Steadiness: 0 },
+        { Conscientiousness: 0 },
+      ],
+    };
+
+    if (localStorage.getItem('testResults')) {
+      try {
+        testResults = JSON.parse(localStorage.getItem('testResults'));
+      } catch (e) {
+        console.error('Error parsing testResults from localStorage', e);
+      }
+    }
+
+    // --------------------------------------------------
+    // Custom preset arrays for each graph
+    // --------------------------------------------------
+
+    // 1. Rolli Kaitumine: (as described)
+    const rolliArrays = {
+      "Dominance":     [28, 22, "", 12, 11, "", "", 10, 9, "", 8, "", 7, "", 6, "", "", "", 5, "", 4, "", 3, "", 2, 1, "", 0],
+      "Influence":     [28, 22, "", 14, 13, 12, 11, 10, 9, "", 8, "", "", 7, "", "", 6, "", "", 5, "", 4, "", "", 3, 2, 1, 0],
+      "Steadiness":    [28, 19, 12, "", 11, 10, "", 9, "", 8, "", "", 7, "", 6, "", "", 5, "", "", 4, "", 3, "", 2, 1, "", 0],
+      "Conscientiousness": [28, 23, 14, "", 13, 12, "", 11, 10, "", 9, "", "", 8, "", "", 7, "", 6, "", 5, "", 4, "", 3, 2, 1, 0]
+    };
+
+    // 2. Isiklik Stiil: (sample arrays; adjust as needed)
+    const isiklikArrays = {
+      "Dominance":     [28, 21, "", 13, 12, "", "", 10, 9, "", 8, "", 7, "", 6, "", "", "", 5, "", 4, "", 3, "", 2, 1, "", 0],
+      "Influence":     [28, 22, "", 16, 15, 14, 13, 12, "", 11, 10, "", "", 9, "", "", 8, "", "", 7, "", 6, "", 5, "", "", 0],
+      "Steadiness":    [28, 20, 14, "", 13, "", 11, 10, "", 9, "", "", 8, "", 7, "", "", 6, "", "", 5, "", 4, "", 3, 2, "", 0],
+      "Conscientiousness": [28, 24, 15, "", 14, 13, "", 12, 11, "", 10, "", "", 9, "", "", 8, "", 7, "", 6, "", 5, "", 4, 3, "", 0]
+    };
+
+    // 3. Kaitumis Stiil: (sample arrays; adjust as needed)
+    const kaitumisArrays = {
+      "Dominance":     [28, 23, "", 15, 14, "", "", 12, 11, "", 10, "", 9, "", 8, "", "", "", 7, "", 6, "", 5, "", 4, 3, "", 0],
+      "Influence":     [28, 21, "", 17, 16, 15, 14, 13, "", 12, 11, "", "", 10, "", "", 9, "", "", 8, "", 7, "", 6, "", 5, "", 0],
+      "Steadiness":    [28, 20, 16, "", 15, 14, "", 13, "", 12, "", "", 11, "", 10, "", "", 9, "", "", 8, "", 7, "", 6, 5, "", 0],
+      "Conscientiousness": [28, 25, 17, "", 16, 15, "", 14, 13, "", 12, "", "", 11, "", "", 10, "", 9, "", 8, "", 7, "", 6, 5, "", 0]
+    };
+
+    // --------------------------------------------------
+    // Candidate scores for each graph,
+    // extracted from testResults (or set to sample values for testing).
+    // (Format: { "Dominance": value, "Influence": value, "Steadiness": value, "Conscientiousness": value } )
+    // --------------------------------------------------
+    const rolliCandidate = {
+      "Dominance": testResults.rolliKaitumine[0].Dominance || 11,
+      "Influence": testResults.rolliKaitumine[1].Influence || 13,
+      "Steadiness": testResults.rolliKaitumine[2].Steadiness || 10,
+      "Conscientiousness": testResults.rolliKaitumine[3].Conscientiousness || 12
+    };
+    const isiklikCandidate = {
+      "Dominance": testResults.isiklikStiil[0].Dominance || 12,
+      "Influence": testResults.isiklikStiil[1].Influence || 16,
+      "Steadiness": testResults.isiklikStiil[2].Steadiness || 11,
+      "Conscientiousness": testResults.isiklikStiil[3].Conscientiousness || 14
+    };
+    const kaitumisCandidate = {
+      "Dominance": testResults.kaitumisStiil[0].Dominance || 15,
+      "Influence": testResults.kaitumisStiil[1].Influence || 16,
+      "Steadiness": testResults.kaitumisStiil[2].Steadiness || 14,
+      "Conscientiousness": testResults.kaitumisStiil[3].Conscientiousness || 13
+    };
+
+    // --------------------------------------------------
+    // Helper: Creates a graph using a provided title, preset arrays, and candidate scores.
+    // --------------------------------------------------
+    function createGraphFromData(title, arrays, candidateScores) {
+      // Create container div.
+      const container = document.createElement("div");
+      container.className = "graph-container";
+      container.style.height = (totalRows * rowHeight) + "px";
+
+      // Add header title.
+      const titleEl = document.createElement("div");
+      titleEl.className = "graph-title";
+      titleEl.textContent = title;
+      container.appendChild(titleEl);
+
+      // Create table.
+      const table = document.createElement("table");
+      table.className = "graph-table";
+      const tbody = document.createElement("tbody");
+
+      // Loop over 28 rows.
+      for (let r = 0; r < totalRows; r++) {
+        const tr = document.createElement("tr");
+        // Column 1: Intensity (always 28 down to 1)
+        const tdIntensity = document.createElement("td");
+        tdIntensity.className = "intensity-cell";
+        tdIntensity.textContent = totalRows - r;
+        tr.appendChild(tdIntensity);
+
+        // Columns 2-5: Score cells for each dimension.
+        dimensions.forEach(dim => {
+          const td = document.createElement("td");
+          td.className = "score-cell";
+          // Use the preset value from the arrays.
+          const value = arrays[dim][r];
+          if (value !== "" && value !== null && value !== undefined) {
+            td.textContent = value;
+            // If the candidate’s score for this dimension equals the preset value, add a dot.
+            if (candidateScores[dim] == value) {
+              const dot = document.createElement("div");
+              dot.className = "dot";
+              td.appendChild(dot);
+            }
+          }
+          tr.appendChild(td);
+        });
+
+        // Column 6: Segmentation column.
+        // Every 4 rows, add a segment cell with rowSpan of 4.
+        if (r % 4 === 0) {
+          const tdSegment = document.createElement("td");
+          tdSegment.className = "segment-cell";
+          tdSegment.rowSpan = 4;
+          // Segment labels descending from 7 to 1.
+          tdSegment.textContent = 7 - (r / 4);
+          tr.appendChild(tdSegment);
+        }
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      container.appendChild(table);
+
+      // Create an overlay canvas (for connecting the dots)
+      const canvas = document.createElement("canvas");
+      canvas.className = "graph-canvas";
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      container.appendChild(canvas);
+
+      return container;
+    }
+
+    // --------------------------------------------------
+    // Draw connecting lines between dots using the overlay canvas.
+    // It looks for exactly one dot per scoring column (columns 2–5) and connects them.
+    // --------------------------------------------------
+    function drawConnectingLines(container) {
+      const canvas = container.querySelector("canvas.graph-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const containerRect = container.getBoundingClientRect();
+      let dotPositions = [];
+      // For each dimension, scan through the score cells.
+      dimensions.forEach((dim, idx) => {
+        // Get all cells for this dimension.
+        const cells = container.querySelectorAll(`td.score-cell`);
+        cells.forEach(cell => {
+          if (cell.getAttribute("data-dimension") === null) {
+            // To help with correct ordering, we set data-dimension when creating cells.
+            // But here we simply use the ordering since we added cells in order.
+          }
+        });
+        // Instead, iterate over rows and pick the cell in the proper column.
+        const rows = container.querySelectorAll("tbody tr");
+        for (let r = 0; r < rows.length; r++) {
+          // The cell index 1 corresponds to the first scoring column (Dominance),
+          // index 2 for Influence, etc.
+          const cell = rows[r].children[idx + 1]; // +1 because intensity is column 0.
+          if (cell && cell.querySelector(".dot")) {
+            const dot = cell.querySelector(".dot");
+            const dotRect = dot.getBoundingClientRect();
+            const x = dotRect.left + dotRect.width / 2 - containerRect.left;
+            const y = dotRect.top + dotRect.height / 2 - containerRect.top;
+            dotPositions[idx] = { x, y };
+            break; // found dot for this column.
+          }
+        }
+      });
+      if (dotPositions.length === 4 && dotPositions.every(pos => pos !== undefined)) {
+        ctx.beginPath();
+        ctx.moveTo(dotPositions[0].x, dotPositions[0].y);
+        for (let i = 1; i < dotPositions.length; i++) {
+          ctx.lineTo(dotPositions[i].x, dotPositions[i].y);
+        }
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    // --------------------------------------------------
+    // Build the three graphs using our configurations.
+    // --------------------------------------------------
+    const graphsData = [
+      { title: "Rolli Kaitumine", arrays: rolliArrays, candidateScores: rolliCandidate },
+      { title: "Isiklik Stiil", arrays: isiklikArrays, candidateScores: isiklikCandidate },
+      { title: "Kaitumis Stiil", arrays: kaitumisArrays, candidateScores: kaitumisCandidate }
+    ];
+
+    const graphArea = document.getElementById("graphArea");
+    graphsData.forEach(data => {
+      const graphElement = createGraphFromData(data.title, data.arrays, data.candidateScores);
+      graphArea.appendChild(graphElement);
+      // Draw the connecting lines after the graph is rendered.
+      window.addEventListener("load", () => { drawConnectingLines(graphElement); });
+    });
+  </script>
+</body>
+</html>
+

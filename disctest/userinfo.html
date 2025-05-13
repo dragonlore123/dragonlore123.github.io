@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="userInfoTitle">Your information</h1>
+    <form id="userInfoForm" action="success.html" method="POST">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" class="userInfoInput" required>
+            <option value="" disabled selected>Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br><br>
+
+        <label for="ageRange">Age Range:</label>
+        <select id="ageRange" name="ageRange" class="userInfoInput" required>
+            <option value="" disabled selected>Select</option>
+            <option value="under-18">Under 18</option>
+            <option value="18-25">18-25</option>
+            <option value="26-35">26-35</option>
+            <option value="36-45">36-45</option>
+            <option value="46+">46+</option>
+        </select><br><br>
+
+        <label for="region">Where are you from? <em>(ethnicity)</em></label>
+        <select type="text" id="region" name="region" class="userInfoInput"required>
+            <option value="" disabled selected>Select</option>
+            <option value="north-america">North America</option>
+            <option value="south-america">South America</option>
+            <option value="europe">Europe</option>
+            <option value="asia">Asia</option>
+            <option value="africa">Africa</option>
+            <option value="oceania">Oceania</option>
+        </select><br><br>
+
+        <label for="residence">Where do you live?</label>
+        <select type="text" id="residence" name="residence" class="userInfoInput" required>
+            <option value="" disabled selected>Select</option>
+            <option value="north-america">North America</option>
+            <option value="south-america">South America</option>
+            <option value="europe">Europe</option>
+            <option value="asia">Asia</option>
+            <option value="africa">Africa</option>
+            <option value="oceania">Oceania</option>
+        </select><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    <p class="userInfoNote">Note: This information is for statistical purposes only and your personal details will be kept discreet.</p>
+</body>
+</html>
