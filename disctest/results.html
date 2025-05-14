@@ -53,7 +53,7 @@
       font-weight: bold;
       background: #e8e8e8;
     }
-    /* A blue dot is placed if a cell’s value equals the candidate’s score */
+    /* A red dot is placed if a cell’s value (or closest match) is chosen */
     .dot {
       position: absolute;
       width: 13px;
@@ -67,6 +67,7 @@
     }
     /* The overlay canvas is absolutely positioned and non‐interactive */
     canvas.graph-canvas {
+      position: absolute;  /* ADDED: ensure absolute positioning */
       top: 0;
       left: 0;
       pointer-events: none;
@@ -79,12 +80,12 @@
   <div id="graphArea"></div>
 
   <script>
-    // Total rows (always 28) and row height (20px)
+    // Total rows (always 28) and row height (18px, matching CSS)
     const totalRows = 28;
-    const rowHeight = 20;
+    const rowHeight = 18;
     const dimensions = ["Dominance", "Influence", "Steadiness", "Conscientiousness"];
     
-    // Retrieve testResults from localStorage; if none, use the default object.
+    // Retrieve testResults from localStorage; if not present, use default object.
     var testResults = {
       rolliKaitumine: [
         { Dominance: 0 },
@@ -117,109 +118,130 @@
     // --------------------------------------------------
     // Custom preset arrays for each graph
     // --------------------------------------------------
-
-    // 1. Rolli Kaitumine: (as described)
+    // 1. Rolli Kaitumine preset arrays (as described)
     const rolliArrays = {
-      "Dominance":     [28, 22, "", 12, 11, "", "", 10, 9, "", 8, "", 7, "", 6, "", "", "", 5, "", 4, "", 3, "", 2, 1, "", 0],
-      "Influence":     [28, 22, "", 14, 13, 12, 11, 10, 9, "", 8, "", "", 7, "", "", 6, "", "", 5, "", 4, "", "", 3, 2, 1, 0],
-      "Steadiness":    [28, 19, 12, "", 11, 10, "", 9, "", 8, "", "", 7, "", 6, "", "", 5, "", "", 4, "", 3, "", 2, 1, "", 0],
+      "Dominance":         [28, 22, "", 12, 11, "", "", 10, 9, "", 8, "", 7, "", 6, "", "", "", 5, "", 4, "", 3, "", 2, 1, "", 0],
+      "Influence":         [28, 22, "", 14, 13, 12, 11, 10, 9, "", 8, "", "", 7, "", "", 6, "", "", 5, "", 4, "", "", 3, 2, 1, 0],
+      "Steadiness":        [28, 19, 12, "", 11, 10, "", 9, "", 8, "", "", 7, "", 6, "", "", 5, "", "", 4, "", 3, "", 2, 1, "", 0],
       "Conscientiousness": [28, 23, 14, "", 13, 12, "", 11, 10, "", 9, "", "", 8, "", "", 7, "", 6, "", 5, "", 4, "", 3, 2, 1, 0]
     };
 
-    // 2. Isiklik Stiil: (sample arrays; adjust as needed)
+    // 2. Isiklik Stiil sample preset arrays (adjust as needed)
     const isiklikArrays = {
-      "Dominance":     [0, 1, 2, 3, 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", "", 10, "", "", 11, "", 12, 13, 14, 23, "", 28],
-      "Influence":     [0, 1, "", 2, "", 3, "", "", 4, "", 5, "", 6, "", 7, "", "", 8, "", "", "", 9, 10, "", 11, 20, "", 28],
-      "Steadiness":    [0, 1, "", 2, 3, "", 4, "", 5, "", 6, "", "", 7, "", "", 8, "", 9, "", "", 10, 11, "", 12, 19, "", 28],
+      "Dominance":         [0, 1, 2, 3, 4, "", 5, "", 6, "", 7, "", 8, "", 9, "", "", 10, "", "", 11, "", 12, 13, 14, 23, "", 28],
+      "Influence":         [0, 1, "", 2, "", 3, "", "", 4, "", 5, "", 6, "", 7, "", "", 8, "", "", "", 9, 10, "", 11, 20, "", 28],
+      "Steadiness":        [0, 1, "", 2, 3, "", 4, "", 5, "", 6, "", "", 7, "", "", 8, "", 9, "", "", 10, 11, "", 12, 19, "", 28],
       "Conscientiousness": [0, 1, 2, 3, "", 4, "", "", 5, "", 6, "", "", 7, "", "", 8, "", 9, "", 10, 11, "", 12, 13, 20, "", 28]
     };
 
-    // 3. Kaitumis Stiil: (sample arrays; adjust as needed)
+    // 3. Kaitumis Stiil sample preset arrays (adjust as needed)
     const kaitumisArrays = {
-      "Dominance":     [28, 22, "", 8, 7, 6, 5, 4, 3, "", 2, 1, 0, "", -1, -2, -3, "", -4, -5, -6, -7, -8, -9, "", -10, "", -28],
-      "Influence":     [28, 22, "", 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, "", 1, 0, -1, -2, "", -3, -4, "", -5, -6, "", -7, "", -28],
-      "Steadiness":    [28, 18, "", 9, 8, 7, 6, 5, 4, 3, 2, 1, "", 0, -1, "", -2, "", -3, -4, -5, "", -6, -7, "", -8, "", -28],
+      "Dominance":         [28, 22, "", 8, 7, 6, 5, 4, 3, "", 2, 1, 0, "", -1, -2, -3, "", -4, -5, -6, -7, -8, -9, "", -10, "", -28],
+      "Influence":         [28, 22, "", 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, "", 1, 0, -1, -2, "", -3, -4, "", -5, -6, "", -7, "", -28],
+      "Steadiness":        [28, 18, "", 9, 8, 7, 6, 5, 4, 3, 2, 1, "", 0, -1, "", -2, "", -3, -4, -5, "", -6, -7, "", -8, "", -28],
       "Conscientiousness": [28, 23, "", 11, 10, 9, 8, 7, 6, 5, 4, 3, "", 2, 1, "", 0, -1, -2, -3, -4, -5, -6, -7, "", -8, "", -28]
     };
 
     // --------------------------------------------------
     // Candidate scores for each graph,
     // extracted from testResults (or set to sample values for testing).
-    // (Format: { "Dominance": value, "Influence": value, "Steadiness": value, "Conscientiousness": value } )
     // --------------------------------------------------
     const rolliCandidate = {
-      "Dominance": testResults.rolliKaitumine[0].Dominance || 11,
-      "Influence": testResults.rolliKaitumine[1].Influence || 13,
-      "Steadiness": testResults.rolliKaitumine[2].Steadiness || 10,
+      "Dominance":         testResults.rolliKaitumine[0].Dominance || 11,
+      "Influence":         testResults.rolliKaitumine[1].Influence || 13,
+      "Steadiness":        testResults.rolliKaitumine[2].Steadiness || 10,
       "Conscientiousness": testResults.rolliKaitumine[3].Conscientiousness || 12
     };
     const isiklikCandidate = {
-      "Dominance": testResults.isiklikStiil[0].Dominance || 12,
-      "Influence": testResults.isiklikStiil[1].Influence || 16,
-      "Steadiness": testResults.isiklikStiil[2].Steadiness || 11,
+      "Dominance":         testResults.isiklikStiil[0].Dominance || 12,
+      "Influence":         testResults.isiklikStiil[1].Influence || 16,
+      "Steadiness":        testResults.isiklikStiil[2].Steadiness || 11,
       "Conscientiousness": testResults.isiklikStiil[3].Conscientiousness || 14
     };
     const kaitumisCandidate = {
-      "Dominance": testResults.kaitumisStiil[0].Dominance || 15,
-      "Influence": testResults.kaitumisStiil[1].Influence || 16,
-      "Steadiness": testResults.kaitumisStiil[2].Steadiness || 14,
+      "Dominance":         testResults.kaitumisStiil[0].Dominance || 15,
+      "Influence":         testResults.kaitumisStiil[1].Influence || 16,
+      "Steadiness":        testResults.kaitumisStiil[2].Steadiness || 14,
       "Conscientiousness": testResults.kaitumisStiil[3].Conscientiousness || 13
     };
 
     // --------------------------------------------------
-    // Helper: Creates a graph using a provided title, preset arrays, and candidate scores.
+    // Helper: Find the row index in the preset array whose numeric value is closest to the candidate's score.
+    // Only considers non-blank, numeric entries.
+    function findClosestIndex(arr, candidate) {
+      let closestIndex = -1;
+      let minDiff = Infinity;
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== "" && arr[i] !== null && arr[i] !== undefined && !isNaN(arr[i])) {
+          const val = Number(arr[i]);
+          const diff = Math.abs(candidate - val);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        }
+      }
+      return closestIndex;
+    }
+
     // --------------------------------------------------
+    // Helper: Create a graph using a provided title, preset arrays, and candidate scores.
+    // For each dimension, it computes the row index (using findClosestIndex) at which to place the candidate's dot.
     function createGraphFromData(title, arrays, candidateScores) {
+      // Compute dot indices for each dimension.
+      const dotIndices = {};
+      dimensions.forEach(dim => {
+        dotIndices[dim] = findClosestIndex(arrays[dim], candidateScores[dim]);
+      });
+  
       // Create container div.
       const container = document.createElement("div");
       container.className = "graph-container";
       container.style.height = (totalRows * rowHeight) + "px";
-
+  
       // Add header title.
       const titleEl = document.createElement("div");
       titleEl.className = "graph-title";
       titleEl.textContent = title;
       container.appendChild(titleEl);
-
-      // Create table.
+  
+      // Create the table.
       const table = document.createElement("table");
       table.className = "graph-table";
       const tbody = document.createElement("tbody");
-
+  
       // Loop over 28 rows.
       for (let r = 0; r < totalRows; r++) {
         const tr = document.createElement("tr");
-        // Column 1: Intensity (always 28 down to 1)
+  
+        // Column 1: Intensity label.
         const tdIntensity = document.createElement("td");
         tdIntensity.className = "intensity-cell";
         tdIntensity.textContent = totalRows - r;
         tr.appendChild(tdIntensity);
-
-        // Columns 2-5: Score cells for each dimension.
+  
+        // Columns 2-5: Score cells.
         dimensions.forEach(dim => {
           const td = document.createElement("td");
           td.className = "score-cell";
-          // Use the preset value from the arrays.
           const value = arrays[dim][r];
           if (value !== "" && value !== null && value !== undefined) {
             td.textContent = value;
-            // If the candidate’s score for this dimension equals the preset value, add a dot.
-            if (candidateScores[dim] == value) {
-              const dot = document.createElement("div");
-              dot.className = "dot";
-              td.appendChild(dot);
-            }
+          }
+          // If this row is the closest match for this dimension, add a dot.
+          if (r === dotIndices[dim]) {
+            const dot = document.createElement("div");
+            dot.className = "dot";
+            td.appendChild(dot);
           }
           tr.appendChild(td);
         });
-
-        // Column 6: Segmentation column.
-        // Every 4 rows, add a segment cell with rowSpan of 4.
+  
+        // Column 6: Segment column — add a cell every 4 rows, with rowSpan of 4 and a descending label.
         if (r % 4 === 0) {
           const tdSegment = document.createElement("td");
           tdSegment.className = "segment-cell";
           tdSegment.rowSpan = 4;
-          // Segment labels descending from 7 to 1.
           tdSegment.textContent = 7 - (r / 4);
           tr.appendChild(tdSegment);
         }
@@ -227,53 +249,43 @@
       }
       table.appendChild(tbody);
       container.appendChild(table);
-
-      // Create an overlay canvas (for connecting the dots)
+  
+      // Create overlay canvas for drawing connecting lines.
       const canvas = document.createElement("canvas");
       canvas.className = "graph-canvas";
       canvas.width = container.clientWidth;
       canvas.height = container.clientHeight;
       container.appendChild(canvas);
-
+  
       return container;
     }
-
+  
     // --------------------------------------------------
-    // Draw connecting lines between dots using the overlay canvas.
-    // It looks for exactly one dot per scoring column (columns 2–5) and connects them.
-    // --------------------------------------------------
+    // Draw connecting lines between the dots for a given container.
     function drawConnectingLines(container) {
       const canvas = container.querySelector("canvas.graph-canvas");
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       const containerRect = container.getBoundingClientRect();
       let dotPositions = [];
-      // For each dimension, scan through the score cells.
-      dimensions.forEach((dim, idx) => {
-        // Get all cells for this dimension.
-        const cells = container.querySelectorAll(`td.score-cell`);
-        cells.forEach(cell => {
-          if (cell.getAttribute("data-dimension") === null) {
-            // To help with correct ordering, we set data-dimension when creating cells.
-            // But here we simply use the ordering since we added cells in order.
-          }
-        });
-        // Instead, iterate over rows and pick the cell in the proper column.
-        const rows = container.querySelectorAll("tbody tr");
+  
+      // For each dimension (columns 2–5)
+      const rows = container.querySelectorAll("tbody tr");
+      for (let i = 0; i < dimensions.length; i++) {
         for (let r = 0; r < rows.length; r++) {
-          // The cell index 1 corresponds to the first scoring column (Dominance),
-          // index 2 for Influence, etc.
-          const cell = rows[r].children[idx + 1]; // +1 because intensity is column 0.
+          // Cell index i+1 (since 0 is intensity)
+          const cell = rows[r].children[i + 1];
           if (cell && cell.querySelector(".dot")) {
             const dot = cell.querySelector(".dot");
             const dotRect = dot.getBoundingClientRect();
             const x = dotRect.left + dotRect.width / 2 - containerRect.left;
             const y = dotRect.top + dotRect.height / 2 - containerRect.top;
-            dotPositions[idx] = { x, y };
-            break; // found dot for this column.
+            dotPositions[i] = { x, y };
+            break; // found the dot for this dimension
           }
         }
-      });
+      }
+  
       if (dotPositions.length === 4 && dotPositions.every(pos => pos !== undefined)) {
         ctx.beginPath();
         ctx.moveTo(dotPositions[0].x, dotPositions[0].y);
@@ -285,22 +297,32 @@
         ctx.stroke();
       }
     }
-
+  
     // --------------------------------------------------
     // Build the three graphs using our configurations.
-    // --------------------------------------------------
     const graphsData = [
       { title: "Rolli Kaitumine", arrays: rolliArrays, candidateScores: rolliCandidate },
       { title: "Isiklik Stiil", arrays: isiklikArrays, candidateScores: isiklikCandidate },
       { title: "Kaitumis Stiil", arrays: kaitumisArrays, candidateScores: kaitumisCandidate }
     ];
-
+  
     const graphArea = document.getElementById("graphArea");
+  
     graphsData.forEach(data => {
       const graphElement = createGraphFromData(data.title, data.arrays, data.candidateScores);
       graphArea.appendChild(graphElement);
-      // Draw the connecting lines after the graph is rendered.
-      window.addEventListener("load", () => { drawConnectingLines(graphElement); });
+    });
+  
+    // Once the window has loaded, draw connecting lines for each graph.
+    window.addEventListener("load", () => {
+      const containers = document.querySelectorAll(".graph-container");
+      containers.forEach(container => {
+        // Redraw canvas dimensions in case layout changed.
+        const canvas = container.querySelector("canvas.graph-canvas");
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+        drawConnectingLines(container);
+      });
     });
   </script>
 </body>
