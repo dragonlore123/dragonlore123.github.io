@@ -281,32 +281,7 @@ function calculateScore(scoreD, scoreI, scoreS, scoreC, scoreDLeast, scoreILeast
     testResults.kaitumisStiil[2].Steadiness = scoreS - scoreSLeast;
     testResults.kaitumisStiil[3].Conscientiousness = scoreC - scoreCLeast;
 };
-/*
-// Function to update scores
-function updateScore(word, type) {
-    const scoreVariable = wordToScore[word];
-    if (scoreVariable) {
-        if (type === "most") {
-            if (typeof window[scoreVariable] === "number") {
-                window[scoreVariable]++;
-                console.log(`Incremented ${scoreVariable}:`, window[scoreVariable]);
-            } else {
-                console.error(`Score variable "${scoreVariable}" is not initialized.`);
-            }
-        } else if (type === "least") {
-            const leastVariable = `${scoreVariable}Least`;
-            if (typeof window[leastVariable] === "number") {
-                window[leastVariable]++;
-                console.log(`Incremented ${leastVariable}:`, window[leastVariable]);
-            } else {
-                console.error(`Score variable "${leastVariable}" is not initialized.`);
-            }
-        }
-    } else {
-        console.error(`Word "${word}" not found in wordToScore mapping.`);
-    }
-}
-*/
+
 // Function to update scores
 function updateScore(word, type) {
     const scoreVariable = wordToScore[word];
@@ -459,20 +434,30 @@ function loadQuestion() {
 
 
 function finishTest() {
+    // Save the answers to localStorage
     localStorage.setItem("discTestAnswers", JSON.stringify(userAnswers));
 
+    // Update the question container to show the "Test Finished" message
     const questionContainer = document.getElementById("question-container");
     questionContainer.innerHTML = "<h2>Test Finished!</h2>";
+
+    // Hide the "Finish" button
+    const nextButton = document.getElementById("next-button");
+    if (nextButton) {
+        nextButton.style.display = "none"; // Hide the button
+    }
+
+    // Calculate and log the test results
     calculateScore(scoreD, scoreI, scoreS, scoreC, scoreDLeast, scoreILeast, scoreSLeast, scoreCLeast);
     console.log("Test Results:", JSON.stringify(testResults, null, 2));
-    // Display results
 
+    // Save results to localStorage
+    localStorage.setItem('testResults', JSON.stringify(testResults));
+
+    // Redirect to the results page after a short delay
     setTimeout(() => {
         window.location.href = "results.html";
     }, 5000);
-    
-    // Save results to localStorage
-    localStorage.setItem('testResults', JSON.stringify(testResults));
 }
 
 // Load the first question on page load
