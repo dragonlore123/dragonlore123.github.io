@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Personality</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1faee;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .feedback-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .feedback-section {
+      margin-bottom: 20px;
+    }
+    .feedback-section p {
+      line-height: 1.5;
+    }
+    textarea {
+      width: 100%;
+      padding: 5px;
+      font-size: 14px;
+    }
+    button {
+      display: inline-block;
+      padding: 8px 16px;
+      font-size: 14px;
+      margin-top: 10px;
+      cursor: pointer;
+      background: #84d1d2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    #aiAnswer {
+      margin-top: 10px;
+      background: #e8e8e8;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Personality</h1>
+  <div class="feedback-container">
+    <div id="feedbackText" class="feedback-section">
+      <!-- Computed feedback appears here -->
+    </div>
+    <div id="aiChatSection" class="feedback-section">
+      <h2>Ask a Question</h2>
+      <p>For example, "Based on my personality type, what kind of worker am&nbsp;I?"</p>
+      <textarea id="userQuestion" rows="3" placeholder="Enter your question here..."></textarea>
+      <button id="askQuestion">Ask</button>
+      <div id="aiAnswer"></div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      For this example, we compute feedback based on candidate scores.
+      Candidate scores were previously stored in localStorage after the test.
+      If they don't exist, we use a default sample candidate.
+    */
+    
+    // Sample default candidate scores (for Rolli Kaitumine) structure:
+    let candidate = {
+      "Dominance": 11,
+      "Influence": 13,
+      "Steadiness": 10,
+      "Conscientiousness": 12
+    };
+
+    // Try to load from localStorage (if your graphs page saved a "testResults" object)
+    if (localStorage.getItem('testResults')) {
+      try {
+        const testResults = JSON.parse(localStorage.getItem('testResults'));
+        // Here we pull candidate data for one test (e.g., rolliKaitumine)
+        candidate = {
+          "Dominance": testResults.rolliKaitumine[0].Dominance,
+          "Influence": testResults.rolliKaitumine[1].Influence,
+          "Steadiness": testResults.rolliKaitumine[2].Steadiness,
+          "Conscientiousness": testResults.rolliKaitumine[3].Conscientiousness
+        };
+      } catch(e) {
+        console.error("Error reading candidate data: ", e);
+      }
+    }
+
+    // Compute feedback based on the candidate's scores.
+    function computeFeedback(candidate) {
+      const traits = Object.keys(candidate);
+      let strongestTrait = "";
+      let highestScore = -Infinity;
+      let totalScore = 0;
+
+      traits.forEach(trait => {
+        const score = Number(candidate[trait]);
+        totalScore += score;
+        if (score > highestScore) {
+          highestScore = score;
+          strongestTrait = trait;
+        }
+      });
+      
+      // Determine a personality type based on the strongest trait.
+      // (This is a simple mapping—you can expand or modify as needed.)
+      let personalityType = "";
+      switch(strongestTrait) {
+        case "Dominance":
+          personalityType = "Leader";
+          break;
+        case "Influence":
+          personalityType = "Communicator";
+          break;
+        case "Steadiness":
+          personalityType = "Team Player";
+          break;
+        case "Conscientiousness":
+          personalityType = "Analyst";
+          break;
+        default:
+          personalityType = "Balanced";
+      }
+      
+      // Compose the feedback message.
+      let feedback = `<h2>Your Strongest Trait: ${strongestTrait}</h2>`;
+      feedback += `<p>Your score for ${strongestTrait} is ${highestScore}. This suggests that you are ${strongestTrait === "Dominance" ? "decisive and goal-oriented" : (strongestTrait === "Influence" ? "sociable and inspirational" : (strongestTrait === "Steadiness" ? "supportive and consistent" : "detail-oriented and systematic"))}.</p>`;
+      feedback += `<h2>Your Personality Type: ${personalityType}</h2>`;
+      feedback += `<p>You exhibit characteristics of a&nbsp;<strong>${personalityType}</strong>. This means you likely excel in environments that value ${personalityType === "Leader" ? "strategic decision making and initiative" : (personalityType === "Communicator" ? "collaboration and interpersonal skills" : (personalityType === "Team Player" ? "consistency and reliability" : "accuracy and thoroughness"))}.</p>`;
+      return feedback;
+    }
+
+    // Insert computed feedback into the page.
+    document.getElementById("feedbackText").innerHTML = computeFeedback(candidate);
+
+    // Simulate an AI answer when the user asks a question.
+    document.getElementById("askQuestion").addEventListener("click", () => {
+      const question = document.getElementById("userQuestion").value;
+      let answerText = "";
+      
+      // For demonstration, we check if the question mentions "worker" to generate a sample response.
+      if (question.toLowerCase().includes("worker")) {
+        answerText = `<p>Based on your personality type, you are an efficient, proactive worker—likely to excel in roles where leadership, initiative, and clear communication are valued. Your strong trait suggests you're not afraid to take charge and innovate!</p>`;
+      } else if (question.trim() === "") {
+        answerText = `<p>Please enter a question.</p>`;
+      } else {
+        answerText = `<p>This is where the answer is generated</p>`;
+      }
+      
+      document.getElementById("aiAnswer").innerHTML = answerText;
+    });
+  </script>
+</body>
+</html>
