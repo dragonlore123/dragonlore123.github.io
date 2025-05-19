@@ -377,6 +377,11 @@ function loadQuestion() {
         mostRadio.name = "most";
         mostRadio.value = index;
         mostRadio.id = `most-${index}`;
+        mostRadio.className = "testRadioButton";
+
+        // Custom span for "Most" radio button
+        const mostCustomSpan = document.createElement("span");
+        mostCustomSpan.className = "radio-custom";
 
         // "Least" radio button
         const leastRadio = document.createElement("input");
@@ -384,6 +389,11 @@ function loadQuestion() {
         leastRadio.name = "least";
         leastRadio.value = index;
         leastRadio.id = `least-${index}`;
+        leastRadio.className = "testRadioButton";
+
+        // Custom span for "Least" radio button
+        const leastCustomSpan = document.createElement("span");
+        leastCustomSpan.className = "radio-custom";
 
         // Add event listeners to ensure "Most" and "Least" cannot be the same
         mostRadio.addEventListener("change", () => {
@@ -417,8 +427,10 @@ function loadQuestion() {
 
         // Append elements to the option container
         optionContainer.appendChild(mostRadio);
+        optionContainer.appendChild(mostCustomSpan); // Add custom span for "Most"
         optionContainer.appendChild(optionText);
         optionContainer.appendChild(leastRadio);
+        optionContainer.appendChild(leastCustomSpan); // Add custom span for "Least"
 
         // Add the option container to the form
         answerForm.appendChild(optionContainer);

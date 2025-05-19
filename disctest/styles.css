@@ -292,3 +292,47 @@ input[type="radio"] {
     padding: 20px;
     margin: 0 auto;
 }
+
+.testRadioButton {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+/* Custom radio button */
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    display: inline-block;
+    position: relative;
+    margin-right: 5px; /* Adjust margin as needed */
+}
+
+/* When radio is checked, show the inner circle */
+.testRadioButton:checked + .radio-custom::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* Container for each option */
+.option-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;   /* Defines spacing between groups */
+    margin-bottom: 10px;  /* Optional: space between options vertically */
+}
+
+/* Option text */
+.option-text {
+    cursor: pointer;
+}
