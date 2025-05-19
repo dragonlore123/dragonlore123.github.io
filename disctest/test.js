@@ -426,9 +426,9 @@ function loadQuestion() {
 
     // Update the "Next" button text to "Finish" if it's the last question
     if (currentQuestionIndex === questions.length - 1) {
-        nextButton.textContent = "Finish";
+        nextbuttontext.textContent = "Finish";
     } else {
-        nextButton.textContent = "Next";
+        nextbuttontext.textContent = "Next";
     }
 }
 

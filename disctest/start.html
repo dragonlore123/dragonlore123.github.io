@@ -6,13 +6,15 @@
     <title>DiSC Test</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="testbody">
     <div id="question-container">
         <form id="answer-form" class="answer-form">
             <!-- Options with radio buttons will be dynamically added here -->
         </form>
     </div>
-    <button id="next-button" class="nextButton" onclick="nextQuestion()">Next</button>
+    <button id="next-button" class="nextButton fbutton" onclick="nextQuestion()">
+        <span id="nextbuttontext"></span>
+    </button>
     <script src="test.js"></script>
 </body>
 </html>
